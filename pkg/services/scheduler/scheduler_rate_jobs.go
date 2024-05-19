@@ -12,7 +12,6 @@ func (ss *schedulerService) StopRateJob() {
 	ss.schedulers[rate].Stop()
 }
 
-// Rates microservice
 func (ss *schedulerService) setupRateJobs() {
 	id, err := ss.schedulers[rate].AddFunc(
 		fmt.Sprintf("@every %ss", ss.config.updateRatesConfig.UpdateRatesTimer),
@@ -20,5 +19,5 @@ func (ss *schedulerService) setupRateJobs() {
 	)
 	handleSchedulerError(err)
 
-	jobNames[id] = "Restart Subscription Rates Process"
+	jobNames[id] = "Update Rates Process"
 }

@@ -1,6 +1,9 @@
 package rate_entity
 
-import "exchange_rate/pkg/domain/vo"
+import (
+	"exchange_rate/pkg/domain/vo"
+	"strings"
+)
 
 type Rate struct {
 	ID      vo.UUID `json:"id"`
@@ -18,7 +21,7 @@ func NewRate(
 		ID:      vo.NewID(),
 		Date:    date,
 		Rate:    rate,
-		ValCode: valCode,
+		ValCode: strings.ToUpper(valCode),
 		Code:    code,
 	}
 }

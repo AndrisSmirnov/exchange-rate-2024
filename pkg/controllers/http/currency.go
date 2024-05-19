@@ -21,7 +21,7 @@ func (h *HTTPController) CurrencyController(router *gin.Engine) {
 					RateValCode: rate_dto.RateValCode{ValCode: h.baseValCode},
 				})
 				if err != nil {
-					c.JSON(400, nil)
+					c.JSON(http.StatusBadRequest, nil)
 					return
 				}
 

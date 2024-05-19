@@ -11,7 +11,6 @@ WORKDIR /usr/src/app
 
 COPY --from=build-stage /usr/src/app/exchange_rate .
 COPY .env .
-# COPY ./files ./files
 
 EXPOSE 8080
 

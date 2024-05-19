@@ -1,0 +1,1 @@
+INSERT INTO "rate" ("val_code", "code") VALUES ('USD', 840);

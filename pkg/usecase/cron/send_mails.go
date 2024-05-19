@@ -3,6 +3,7 @@ package cron_usecase
 import (
 	"exchange_rate/pkg/domain/vo"
 	rate_dto "exchange_rate/pkg/usecase/rate/dto"
+	"fmt"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -32,6 +33,9 @@ func (u *CronUC) SendToAllUsersCurrencyUpdateForUsdUah() {
 	for _, u := range users {
 		emails = append(emails, u.Mail)
 	}
+
+	fmt.Printf("--> RATE: %v\n", rate)
+	fmt.Printf("--> EMAILS: %v\n", emails)
 
 	if err := u.services.MailService.SendUpdatedCurrencyEmail(u.ctx, rate, emails); err != nil {
 		logrus.Errorf("error sending currency to users. Reason: %v", err)

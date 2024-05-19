@@ -71,10 +71,6 @@ func NewCronUC(
 }
 
 func (uc *CronUC) checkStore() *errors.Error {
-	// if uc.rep == nil {
-	// 	return newErrorStoreNotFound("Store!")
-	// }
-
 	return nil
 }
 
@@ -113,12 +109,6 @@ func (uc *CronUC) checkConfig() *errors.Error {
 	if len(uc.conf.BasicValCode) == 0 {
 		return newErrorConfig("BasicValCode is empty string")
 	}
-	// if len(uc.conf.SystemID) == 0 {
-	// 	return newErrorConfig("SystemID is empty string")
-	// }
-	// if len(uc.conf.ServerType) == 0 {
-	// 	return newErrorConfig("ServerType is empty string")
-	// }
 
 	return nil
 }

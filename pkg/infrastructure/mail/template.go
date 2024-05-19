@@ -3,8 +3,8 @@ package mail
 import (
 	"bytes"
 	rate_entity "exchange_rate/pkg/domain/rate/entity"
+	"exchange_rate/pkg/packages/errors"
 	"fmt"
-	"html/template"
 	"strings"
 	"time"
 )
@@ -20,8 +20,7 @@ type TemplateFillData struct {
 	QuoteCurrency string
 }
 
-func (e *EmailSender) crateTemplate(rate *rate_entity.Rate) []byte {
-	t, _ := template.ParseFiles("./files/template.html")
+func (e *EmailSender) crateTemplate(rate *rate_entity.Rate) ([]byte, *errors.Error) {
 	var body bytes.Buffer
 
 	mimeHeaders := "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n"
@@ -34,7 +33,9 @@ func (e *EmailSender) crateTemplate(rate *rate_entity.Rate) []byte {
 		QuoteCurrency: strings.ToUpper(UAH),
 	}
 
-	t.Execute(&body, templateFillData)
+	if err := e.templates.ExecuteTemplate(&body, "mailCurrency", templateFillData); err != nil {
+		return nil, ErrCantSetDataToTemplate
+	}
 
-	return body.Bytes()
+	return body.Bytes(), nil
 }

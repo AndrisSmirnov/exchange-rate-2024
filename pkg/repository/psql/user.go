@@ -4,11 +4,13 @@ import (
 	"context"
 	user_model "exchange_rate/pkg/domain/user/model"
 	"exchange_rate/pkg/packages/errors"
+	"fmt"
 )
 
 func (r *Repository) CreateUser(
 	ctx context.Context, data *user_model.UserDB,
 ) *errors.Error {
+	fmt.Printf("--> CREATE USER %+v\n", data)
 	query := `
 		INSERT INTO "user"
 			(
@@ -39,7 +41,7 @@ func (r *Repository) GetUserByID(
 	query := `
 		SELECT
 			id, mail
-		FROM user
+		FROM "user"
 		WHERE id = $1;
 		`
 	var userDB = user_model.UserDB{}
@@ -64,7 +66,7 @@ func (r *Repository) GetUserByEmail(
 	query := `
 		SELECT
 			id, mail
-		FROM user
+		FROM "user"
 		WHERE mail = $1;
 		`
 	var userDB = user_model.UserDB{}
@@ -89,7 +91,7 @@ func (r *Repository) GetUsers(
 	query := `
 		SELECT
 			id, mail
-		FROM user;
+		FROM "user";
 		`
 	dest := []*user_model.UserDB{}
 

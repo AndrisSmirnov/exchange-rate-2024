@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"exchange_rate/pkg/packages/errors"
 	pstgrs "exchange_rate/pkg/repository/psql"
 	rate_service "exchange_rate/pkg/repository/service/rate"
 	user_service "exchange_rate/pkg/repository/service/user"
@@ -20,7 +21,7 @@ type Config struct {
 	psqlConfig *pstgrs.Config
 }
 
-func NewConfig() (*Config, error) {
+func NewConfig() (*Config, *errors.Error) {
 	envData := utils.TryGetEnv[string]
 
 	psqlUser, err := envData("POSTGRES_USER")
@@ -90,7 +91,7 @@ func New(
 	ctx context.Context,
 	errChan chan error,
 	conf Config,
-) (*Repository, error) {
+) (*Repository, *errors.Error) {
 	psql, err := pstgrs.NewRepository(ctx, conf.psqlConfig, errChan)
 	if err != nil {
 		return nil, err

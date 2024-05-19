@@ -32,6 +32,7 @@ func NewRateUC(
 ) (*RateUC, *errors.Error) {
 	uc := &RateUC{
 		ctx: ctx,
+		rep: rep,
 	}
 
 	if uc.ctx == nil {
@@ -67,26 +68,9 @@ func (uc *RateUC) checkStore() *errors.Error {
 }
 
 func (uc *RateUC) checkServices() *errors.Error {
-	// if uc.services == nil {
-	// 	return newErrorServiceNotFound("Services!")
-	// }
-	// if uc.services.Presenter == nil {
-	// 	return newErrorServiceNotFound("Presenter service")
-	// }
-
 	return nil
 }
 
 func (uc *RateUC) checkConfig() *errors.Error {
-	// if uc.conf == nil {
-	// 	return newErrorConfig("Config is nil pointer")
-	// }
-	// if len(uc.conf.SystemID) == 0 {
-	// 	return newErrorConfig("SystemID is empty string")
-	// }
-	// if len(uc.conf.ServerType) == 0 {
-	// 	return newErrorConfig("ServerType is empty string")
-	// }
-
 	return nil
 }

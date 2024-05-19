@@ -27,7 +27,7 @@ func newConnection(
 	ctx context.Context,
 	config *Config,
 	errChan chan error,
-) (*Postgres, error) {
+) (*Postgres, *errors.Error) {
 	conn, err := New(ctx, config, errChan)
 	if err != nil {
 		return nil, err
@@ -36,7 +36,7 @@ func newConnection(
 	return conn, nil
 }
 
-func New(ctx context.Context, cfg *Config, errChan chan error) (*Postgres, error) {
+func New(ctx context.Context, cfg *Config, errChan chan error) (*Postgres, *errors.Error) {
 	conn, err := connectToPostgres(ctx, cfg)
 	if err != nil {
 		return nil, err
@@ -76,7 +76,7 @@ func (p *Postgres) reconnect(ctx context.Context) error {
 	return nil
 }
 
-func connectToPostgres(ctx context.Context, cfg *Config) (*sqlx.DB, error) {
+func connectToPostgres(_ context.Context, cfg *Config) (*sqlx.DB, *errors.Error) {
 	logrus.Info("Connecting to Postgres...")
 
 	var (

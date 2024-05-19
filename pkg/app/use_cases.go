@@ -22,7 +22,7 @@ type UseCases struct {
 	*user_usecase.UserUC
 }
 
-func NewUseCases(
+func newUseCases(
 	ctx context.Context,
 	rep *AppRepository,
 	basicValCode string,

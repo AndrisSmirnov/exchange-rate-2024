@@ -1,0 +1,1 @@
+DELETE FROM TABLE "rate" WHERE val_code = 'USD';

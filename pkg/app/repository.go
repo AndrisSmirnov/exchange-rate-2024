@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"exchange_rate/pkg/packages/errors"
 	"exchange_rate/pkg/repository"
 	pstgrs "exchange_rate/pkg/repository/psql"
 	rate_service "exchange_rate/pkg/repository/service/rate"
@@ -17,7 +18,7 @@ type AppRepository struct {
 func newRepository(
 	ctx context.Context, errChan chan error,
 ) (
-	*AppRepository, error,
+	*AppRepository, *errors.Error,
 ) {
 	config, err := repository.NewConfig()
 	if err != nil {

@@ -68,7 +68,7 @@ func (r *Repository) GetRateByValCode(
 		SELECT
 			id, date, rate, val_code, code
 		FROM rate
-		WHERE id = $1;
+		WHERE val_code = $1;
 		`
 	var rateDB = rate_model.RateDB{}
 
@@ -114,7 +114,7 @@ func (r *Repository) UpdateRate(ctx context.Context, data *rate_model.RateDB) *e
 	UPDATE "rate"
 	SET
 		"date" = $2,
-		"rate" = $3,
+		"rate" = $3
 	WHERE "id" = $1
 	`
 	if _, err := r.DB.ExecContext(

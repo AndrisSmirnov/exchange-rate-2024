@@ -15,5 +15,5 @@ type DeleteUserByEmailDto struct {
 }
 
 type UserEmail struct {
-	Mail vo.Email `json:"id" validate:"required,email"`
+	Mail vo.Email `json:"email" validate:"required,email"`
 }

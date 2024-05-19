@@ -5,7 +5,6 @@ import (
 
 	"exchange_rate/pkg/controllers"
 	"exchange_rate/pkg/packages/errors"
-	user_dto "exchange_rate/pkg/usecase/rate/dto"
 
 	"exchange_rate/pkg/utils"
 )
@@ -14,6 +13,7 @@ type App struct {
 	rep         *AppRepository
 	useCases    *UseCases
 	controllers *controllers.Controllers
+	services    *Services
 
 	listener   *errors.Listener
 	ctx        context.Context
@@ -33,13 +33,22 @@ func New(cancelFunc func(), ctx context.Context) (*App, error) {
 	if err != nil {
 		return nil, errors.New("empty BASIC_VALCODE")
 	}
+	serverURL, err := utils.TryGetEnv[string]("SERVER_URL")
+	if err != nil {
+		return nil, errors.New("empty SERVER_URL")
+	}
 
-	useCases, err := NewUseCases(ctx, rep, basicValCode)
+	useCases, err := newUseCases(ctx, rep, basicValCode)
 	if err != nil {
 		return nil, err
 	}
 
-	controllers, err := createControllers(useCases, basicValCode)
+	controllers, err := createControllers(useCases, serverURL, basicValCode)
+	if err != nil {
+		return nil, err
+	}
+
+	services, err := newServices(useCases)
 	if err != nil {
 		return nil, err
 	}
@@ -48,6 +57,7 @@ func New(cancelFunc func(), ctx context.Context) (*App, error) {
 		rep:         rep,
 		useCases:    useCases,
 		controllers: controllers,
+		services:    services,
 
 		listener:   l,
 		cancelFunc: cancelFunc,
@@ -62,9 +72,8 @@ func (app *App) Run() *errors.Error {
 	if err != nil {
 		return err
 	}
-	app.useCases.RateUC.CreateOrUpdateRate(app.ctx, &user_dto.CreateRateDto{
-		Cc: "USD",
-	})
+	app.controllers.Start()
+	app.services.SchedulerService.StartAllJob()
 	return nil
 }
 
@@ -72,4 +81,5 @@ func (app *App) Stop() {
 	if app.listener != nil {
 		app.listener.Stop()
 	}
+	app.services.SchedulerService.StopAllJob()
 }

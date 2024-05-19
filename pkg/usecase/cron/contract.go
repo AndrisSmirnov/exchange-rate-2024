@@ -16,7 +16,7 @@ type (
 			ctx context.Context,
 			rate *rate_entity.Rate,
 			emails []vo.Email,
-		) error
+		) *errors.Error
 	}
 	RateService interface {
 		CreateOrUpdateRate(ctx context.Context, data *rate_dto.CreateRateDto) *errors.Error

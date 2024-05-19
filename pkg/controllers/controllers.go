@@ -5,29 +5,29 @@ import (
 	"exchange_rate/pkg/packages/errors"
 	"log"
 	"net/http"
-	"os"
 )
 
 type Controllers struct {
-	HTTP *_http.HTTPController
+	HTTP      *_http.HTTPController
+	serverURL string
 }
 
-func NewControllers(services _http.Services, basicValCode string) (*Controllers, *errors.Error) {
+func NewControllers(services _http.Services, serverURL, basicValCode string) (*Controllers, *errors.Error) {
 	http, err := _http.NewHttpControllers(services, basicValCode)
 	if err != nil {
 		return nil, err
 	}
 
 	return &Controllers{
-		HTTP: http,
+		HTTP:      http,
+		serverURL: serverURL,
 	}, nil
 }
 
 func (c *Controllers) Start() {
 	handlers := c.HTTP.InitControllers()
-	url := os.Getenv("SERVER_URL")
 
-	go listenAndServe(url, handlers)
+	go listenAndServe(c.serverURL, handlers)
 }
 
 func listenAndServe(url string, handlers http.Handler) {

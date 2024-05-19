@@ -29,14 +29,14 @@ func main() {
 		logrus.Panic(err)
 	}
 
-	logrus.Info("Multimedia microservice launched (/◔ ◡ ◔)/")
+	logrus.Info("Exchange Rate launched (/◔ ◡ ◔)/")
 	go syscallWait(cancelFunc)
 
 	<-ctx.Done()
-	logrus.Info("Multimedia microservice stopping \t(◑ _ ◑)")
+	logrus.Info("Exchange Rate stopping \t(◑ _ ◑)")
 
 	app.Stop()
-	logrus.Info("Multimedia microservice stopped \t(✖ _ ✖)")
+	logrus.Info("Exchange Rate stopped \t(✖ _ ✖)")
 }
 
 func syscallWait(cancelFunc func()) {
