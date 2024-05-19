@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  exchange_rate:
+    container_name: exchange_rate
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8081
+    working_dir: /usr/src/app
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - exchange-rate-network
+
+  db:
+    image: postgres:16.3
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: database
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - exchange-rate-network
+
+  migrate:
+    image: migrate/migrate
+    volumes:
+      - ./migrations:/db
+    command:
+      - "-path"
+      - "db"
+      - "-database"
+      - "postgresql://admin:password@db:5432/database?sslmode=disable"
+      - "up"
+    restart: on-failure
+    depends_on:
+      - db
+    networks:
+      - exchange-rate-network
+
+networks:
+  exchange-rate-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
